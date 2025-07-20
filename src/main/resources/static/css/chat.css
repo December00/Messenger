@@ -253,3 +253,35 @@
     .icon {
         font-size: 20px;
     }
+    .add-friend-form {
+        display: none;
+        position: absolute;
+        left: 60px;
+        top: 50px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        background: #1e1e1e;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        width: 250px;
+    }
+
+    .add-friend-form input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .add-friend-form button {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        background: #FF096C;
+        width: 100%;
+    }

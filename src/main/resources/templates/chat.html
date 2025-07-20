@@ -11,28 +11,38 @@
     <button class="sidebar-button" title="Начать видеочат">
         <span class="videochat-icon">📹</span>
     </button>
-    <button class="sidebar-button" title="Добавить друга">
+    <button id="add-button" class="sidebar-button" title="Добавить друга">
         <span class="icon">+</span>
     </button>
+
     <div style="flex-grow: 1;"></div>
     <button class="sidebar-button" title="Настройки">
         <span class="icon">⚙️</span>
     </button>
+    <form method="post" action="/chat">
+        <div id="add-friend-form" class="add-friend-form">
+            <input type="text" name="name" placeholder="Введите имя пользователя" required>
+            <button type="submit" id="submit-add-friend">Добавить</button>
+        </div>
+    </form>
 </div>
-
 <div class="friends-sidebar">
     <div class="friends-header">
         <h2>Друзья</h2>
     </div>
     <ul class="friends-list">
-        <li class="friend-item">
+        <li class="friend-item" th:each="chat : ${chats}">
             <div class="friend-avatar"></div>
             <div>
-                <span class="friend-name">December00</span>
-                <div class="friend-last-message">Call me later</div>
+                <!-- Здесь нужно отображать имя друга, а не его ID -->
+                <span th:text="${chat.secondId}" class="friend-name"></span>
+                <div th:if="${not chat.messages.empty}"
+                     th:text="${chat.messages[0].content}"
+                     class="friend-last-message"></div>
+                <div th:unless="${not chat.messages.empty}" class="friend-last-message">Нет сообщений</div>
             </div>
         </li>
-        <li class="friend-item">
+        <!-- <li class="friend-item">
             <div class="friend-avatar"></div>
             <div>
                 <span class="friend-name">Tanyusha❤</span>
@@ -45,7 +55,7 @@
                 <span class="friend-name">Her</span>
                 <div class="friend-last-message">Sit on me pls...</div>
             </div>
-        </li>
+        </li> -->
     </ul>
 </div>
 
@@ -96,5 +106,6 @@
         </button>
     </div>
 </div>
+<script src="/js/chat.js"></script>
 </body>
 </html>

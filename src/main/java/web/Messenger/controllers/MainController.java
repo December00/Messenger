@@ -45,14 +45,16 @@ public class MainController {
     }
     @PostMapping("/login")
     public String userLogin(@RequestParam String login, @RequestParam String password, Model model) {
-        Optional<User> user = userRepository.findByLogin(login);
+        Optional<User> userOptional = userRepository.findByLogin(login);
 
-        if (user.isEmpty() || !user.get().getPassword().equals(password)) {
+
+        if (userOptional.isEmpty() || !userOptional.get().getPassword().equals(password)) {
             model.addAttribute("error", "Неверный логин или пароль");
             return "registration";
         }
-
+        User user = userOptional.get();
         model.addAttribute("success", "Вход выполнен успешно");
+        //model.addAttribute("userId", user.getId());
         return "redirect:/chat";
     }
 }

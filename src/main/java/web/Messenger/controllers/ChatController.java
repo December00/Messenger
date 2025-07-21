@@ -1,5 +1,6 @@
 package web.Messenger.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +25,22 @@ public class ChatController {
     private UserRepository userRepository;
 
     @GetMapping("/chat")
-    public String chatPage(Model model) {
-        model.addAttribute("chats", chatRepository.findAllUserChats(5L));
+    public String chatPage(Model model, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        Optional<User> userOptional = userRepository.findById(userId);
+        User user;
+        if(userOptional.isPresent()) {
+           user = userOptional.get();
+        }
+        else{
+            return "redirect:/";
+        }
+        String username = user.getLogin();
+        model.addAttribute("chats", chatRepository.findAllUserChats(userId));
+        model.addAttribute("userId", userId);
         return "chat";
     }
     @GetMapping("/chat/{id}")
@@ -34,16 +49,20 @@ public class ChatController {
         return "chat";
     }
     @PostMapping("/chat")
-    public String addChat(@RequestParam String name, Model model){
+    public String addChat(@RequestParam String name, HttpSession session, Model model){
         try {
+            Long userId = (Long) session.getAttribute("userId");
             Optional<User> friendOptional = userRepository.findByLogin(name);
             //Нужно будет добавить сообщение в случае отсутствия пользователя с таким именем
+            if(friendOptional.isEmpty()){
+                throw new Exception("Пользователь с таким ником не найден");
+            }
             User friend = friendOptional.get();
             Long friendId = friend.getId();
-            if(chatRepository.existsByFirstIdAndSecondId(5L, friendId) || chatRepository.existsByFirstIdAndSecondId(friendId, 5L)){
+            if(chatRepository.existsByFirstIdAndSecondId(userId, friendId) || chatRepository.existsByFirstIdAndSecondId(friendId, 5L)){
                 throw new Exception("Такой чат уже создан");
             }
-            Chat chat = new Chat(5L, friendId);
+            Chat chat = new Chat(userId, friendId);
             chatRepository.save(chat);
 
         }

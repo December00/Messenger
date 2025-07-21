@@ -1,5 +1,6 @@
 package web.Messenger.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +45,7 @@ public class MainController {
         return "registration";
     }
     @PostMapping("/login")
-    public String userLogin(@RequestParam String login, @RequestParam String password, Model model) {
+    public String userLogin(@RequestParam String login, @RequestParam String password, Model model, HttpSession session) {
         Optional<User> userOptional = userRepository.findByLogin(login);
 
 
@@ -54,7 +55,7 @@ public class MainController {
         }
         User user = userOptional.get();
         model.addAttribute("success", "Вход выполнен успешно");
-        //model.addAttribute("userId", user.getId());
+        session.setAttribute("userId", user.getId());
         return "redirect:/chat";
     }
 }

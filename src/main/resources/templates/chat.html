@@ -35,7 +35,7 @@
             <div class="friend-avatar"></div>
             <div>
                 <!-- Здесь нужно отображать имя друга, а не его ID -->
-                <span th:text="${chat.secondId}" class="friend-name"></span>
+                <span th:text="${userId == chat.firstId} ? ${chat.secondId} : ${chat.firstId}" class="friend-name"></span>
                 <div th:if="${not chat.messages.empty}"
                      th:text="${chat.messages[0].content}"
                      class="friend-last-message"></div>

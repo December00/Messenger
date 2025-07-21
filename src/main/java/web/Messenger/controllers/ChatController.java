@@ -13,10 +13,23 @@ import web.Messenger.repo.MessageRepository;
 import web.Messenger.repo.ChatRepository;
 import web.Messenger.repo.UserRepository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
 public class ChatController {
+    private Map<Long, String> getChatNames(List<Chat> chats){
+        Map<Long, String> chatNames = new HashMap<>();
+        for(Chat chat : chats) {
+            if(!chatNames.containsKey(chat.getSecondId()))
+                chatNames.put(chat.getSecondId(), userRepository.findById(chat.getSecondId()).get().getLogin());
+            if(!chatNames.containsKey(chat.getFirstId()))
+                chatNames.put(chat.getFirstId(), userRepository.findById(chat.getFirstId()).get().getLogin());
+        }
+        return chatNames;
+    }
     @Autowired
     private ChatRepository chatRepository;
     @Autowired
@@ -32,14 +45,17 @@ public class ChatController {
         }
         Optional<User> userOptional = userRepository.findById(userId);
         User user;
+        List<Chat> chats = chatRepository.findAllUserChats(userId);
         if(userOptional.isPresent()) {
            user = userOptional.get();
         }
         else{
             return "redirect:/";
         }
-        String username = user.getLogin();
-        model.addAttribute("chats", chatRepository.findAllUserChats(userId));
+        Map<Long, String> chatNames = getChatNames(chats);
+
+        model.addAttribute("chats", chats);
+        model.addAttribute("chatNames", chatNames);
         model.addAttribute("userId", userId);
         return "chat";
     }
@@ -59,7 +75,7 @@ public class ChatController {
             }
             User friend = friendOptional.get();
             Long friendId = friend.getId();
-            if(chatRepository.existsByFirstIdAndSecondId(userId, friendId) || chatRepository.existsByFirstIdAndSecondId(friendId, 5L)){
+            if(chatRepository.existsByFirstIdAndSecondId(userId, friendId) || chatRepository.existsByFirstIdAndSecondId(friendId, userId)){
                 throw new Exception("Такой чат уже создан");
             }
             Chat chat = new Chat(userId, friendId);

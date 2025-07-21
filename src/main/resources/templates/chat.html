@@ -34,28 +34,14 @@
         <li class="friend-item" th:each="chat : ${chats}">
             <div class="friend-avatar"></div>
             <div>
-                <!-- Здесь нужно отображать имя друга, а не его ID -->
-                <span th:text="${userId == chat.firstId} ? ${chat.secondId} : ${chat.firstId}" class="friend-name"></span>
+                <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}" class="friend-name"></span>
                 <div th:if="${not chat.messages.empty}"
                      th:text="${chat.messages[0].content}"
                      class="friend-last-message"></div>
                 <div th:unless="${not chat.messages.empty}" class="friend-last-message">Нет сообщений</div>
             </div>
         </li>
-        <!-- <li class="friend-item">
-            <div class="friend-avatar"></div>
-            <div>
-                <span class="friend-name">Tanyusha❤</span>
-                <div class="friend-last-message">Wanna play cs2 today?</div>
-            </div>
-        </li>
-        <li class="friend-item">
-            <div class="friend-avatar"></div>
-            <div>
-                <span class="friend-name">Her</span>
-                <div class="friend-last-message">Sit on me pls...</div>
-            </div>
-        </li> -->
+
     </ul>
 </div>
 

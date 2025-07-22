@@ -56,6 +56,7 @@ public class MainController {
         User user = userOptional.get();
         model.addAttribute("success", "Вход выполнен успешно");
         session.setAttribute("userId", user.getId());
+        
         return "redirect:/chat";
     }
 }

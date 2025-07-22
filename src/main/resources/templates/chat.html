@@ -31,7 +31,10 @@
         <h2>Друзья</h2>
     </div>
     <ul class="friends-list">
-        <li class="friend-item" th:each="chat : ${chats}">
+        <li class="friend-item"
+            th:each="chat : ${chats}"
+            th:id="'chat-' + ${chat.id}"
+            th:onclick="'window.location.href=\'/chat/' + ${chat.id} + '\''">
             <div class="friend-avatar"></div>
             <div>
                 <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}" class="friend-name"></span>
@@ -60,31 +63,17 @@
             </button>
         </div>
     </div>
-
+    <!-- тут для примера используется chatId из роутинга, нужно заменить на сообщения. th: не работает в <div>!!!
     <div class="chat-messages">
-        <div class="message message-outgoing">
-            <div class="message-content">Are u ready?</div>
+        <div th:if="${chatId != null}" class="message message-incoming">
+            <div class="message-content">Call me later</div>
             <div class="message-info">
-                <span class="user-message">You</span>
-                <span class="message-time">21:42</span>
-            </div>
-        </div>
-        <div class="message message-incoming">
-            <div class="message-content">No</div>
-            <div class="message-info">
-                <span class="user-message">December00</span>
-                <span class="message-time">21:42</span>
-            </div>
-        </div>
-        <div class="message message-incoming">
-            <div class="message-content">Call me later.</div>
-            <div class="message-info">
-                <span class="user-message">December00</span>
+                <span th:text="${chatId}" class="user-message"></span>
                 <span class="message-time">21:42</span>
             </div>
         </div>
     </div>
-
+    -->
     <div class="chat-input">
         <textarea placeholder="Написать сообщение..."></textarea>
         <button class="send-button">

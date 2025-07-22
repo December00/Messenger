@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.Messenger.models.Chat;
@@ -43,33 +44,45 @@ public class ChatController {
         if (userId == null) {
             return "redirect:/login";
         }
-        Optional<User> userOptional = userRepository.findById(userId);
-        User user;
         List<Chat> chats = chatRepository.findAllUserChats(userId);
-        if(userOptional.isPresent()) {
-           user = userOptional.get();
-        }
-        else{
-            return "redirect:/";
-        }
+
         Map<Long, String> chatNames = getChatNames(chats);
 
         model.addAttribute("chats", chats);
         model.addAttribute("chatNames", chatNames);
         model.addAttribute("userId", userId);
+        model.addAttribute("chatId", null);
         return "chat";
     }
     @GetMapping("/chat/{id}")
-    public String currentChat(Model model){
+    public String currentChat(@PathVariable(value = "id") Long chatId, Model model, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        Optional<Chat> chatOptional = chatRepository.findById(chatId);
+        if (chatOptional.isEmpty()) {
+            return "redirect:/chat";
+        }
 
+        Chat chat = chatOptional.get();
+        if (!chat.getFirstId().equals(userId) && !chat.getSecondId().equals(userId)) {
+            return "redirect:/chat";
+        }
+        List<Chat> chats = chatRepository.findAllUserChats(userId);
+        Map<Long, String> chatNames = getChatNames(chats);
+        model.addAttribute("chats", chats);
+        model.addAttribute("chatNames", chatNames);
+        model.addAttribute("userId", userId);
+        model.addAttribute("chatId", chatId);
         return "chat";
+
     }
     @PostMapping("/chat")
     public String addChat(@RequestParam String name, HttpSession session, Model model){
         try {
             Long userId = (Long) session.getAttribute("userId");
             Optional<User> friendOptional = userRepository.findByLogin(name);
-            //Нужно будет добавить сообщение в случае отсутствия пользователя с таким именем
             if(friendOptional.isEmpty()){
                 throw new Exception("Пользователь с таким ником не найден");
             }

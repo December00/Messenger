@@ -53,7 +53,7 @@
         <div class="chat-current-friend">
             <div class="friend-avatar" style="margin-right: 10px;"></div>
             <div>
-                <div class="friend-name">December00</div>
+                <div class="friend-name" th:text="${currentFriend} ? ${currentFriend}: 'Выберите чат'"></div>
                 <div style="font-size: 12px; color: #999;">в сети</div>
             </div>
         </div>
@@ -63,7 +63,7 @@
             </button>
         </div>
     </div>
-    <!-- тут для примера используется chatId из роутинга, нужно заменить на сообщения. th: не работает в <div>!!!
+    <!-- тут для примера используется chatId из роутинга, нужно заменить на сообщения. th: не работает в <div>!!!-->
     <div class="chat-messages">
         <div th:if="${chatId != null}" class="message message-incoming">
             <div class="message-content">Call me later</div>
@@ -73,7 +73,7 @@
             </div>
         </div>
     </div>
-    -->
+
     <div class="chat-input">
         <textarea placeholder="Написать сообщение..."></textarea>
         <button class="send-button">

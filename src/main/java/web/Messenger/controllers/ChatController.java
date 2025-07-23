@@ -65,12 +65,20 @@ public class ChatController {
             return "redirect:/chat";
         }
 
-        Chat chat = chatOptional.get();
-        if (!chat.getFirstId().equals(userId) && !chat.getSecondId().equals(userId)) {
+        Chat currentChat = chatOptional.get();
+        if (!currentChat.getFirstId().equals(userId) && !currentChat.getSecondId().equals(userId)) {
             return "redirect:/chat";
         }
         List<Chat> chats = chatRepository.findAllUserChats(userId);
         Map<Long, String> chatNames = getChatNames(chats);
+        Optional<User> friend;
+        if(currentChat.getFirstId().equals(userId)){
+             friend = userRepository.findById(currentChat.getSecondId());
+        }
+        else{
+            friend = userRepository.findById(currentChat.getFirstId());
+        }
+        model.addAttribute("currentFriend", friend.get().getLogin());
         model.addAttribute("chats", chats);
         model.addAttribute("chatNames", chatNames);
         model.addAttribute("userId", userId);

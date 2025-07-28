@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import web.Messenger.models.Chat;
+import web.Messenger.models.Message;
 import web.Messenger.models.User;
 import web.Messenger.repo.MessageRepository;
 import web.Messenger.repo.ChatRepository;
 import web.Messenger.repo.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +113,37 @@ public class ChatController {
         return "redirect:/chat";
     }
     @PostMapping("/chat/{id}")
-    public String printMessage(Model model){
-        return "chat";
+    public String printMessage(@PathVariable(value = "id") Long chatId,  @RequestParam String content, Model model, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        Optional<Chat> chatOptional = chatRepository.findById(chatId);
+        if (chatOptional.isEmpty()) {
+            return "redirect:/chat";
+        }
+        Chat currentChat = chatOptional.get();
+        if (!currentChat.getFirstId().equals(userId) && !currentChat.getSecondId().equals(userId)) {
+            return "redirect:/chat";
+        }
+        List<Chat> chats = chatRepository.findAllUserChats(userId);
+        Map<Long, String> chatNames = getChatNames(chats);
+        Optional<User> friend;
+        if(currentChat.getFirstId().equals(userId)){
+            friend = userRepository.findById(currentChat.getSecondId());
+        }
+        else{
+            friend = userRepository.findById(currentChat.getFirstId());
+        }
+        model.addAttribute("currentFriend", friend.get().getLogin());
+        model.addAttribute("chats", chats);
+        model.addAttribute("chatNames", chatNames);
+        model.addAttribute("userId", userId);
+        model.addAttribute("chatId", chatId);
+        if (content != null && !content.trim().isEmpty()) {
+            messageRepository.save(new Message(currentChat, userId, content.trim(), LocalDateTime.now()));
+        }
+
+        return "redirect:/chat/" + chatId;
     }
 }

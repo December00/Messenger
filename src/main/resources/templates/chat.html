@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Чат с друзьями</title>
+    <title>Messenger - Чат с друзьями</title>
     <link rel="stylesheet" href="/css/chat.css">
 </head>
 <body>
@@ -68,15 +68,15 @@
         <div th:if="${chatId != null}" class="message message-incoming">
             <div class="message-content">Call me later</div>
             <div class="message-info">
-                <span th:text="${chatId}" class="user-message"></span>
+                <span th:text="${chatNames.get(userId)}" class="user-message"></span>
                 <span class="message-time">21:42</span>
             </div>
         </div>
     </div>
 
     <div class="chat-input">
-        <textarea placeholder="Написать сообщение..."></textarea>
-        <button class="send-button">
+        <textarea id="message-input" placeholder="Написать сообщение..."></textarea>
+        <button id="send-button" class="send-button" th:data-chatid="${chatId}">
             <span class="icon">→</span>
         </button>
     </div>

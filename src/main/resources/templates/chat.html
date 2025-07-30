@@ -39,7 +39,7 @@
             <div>
                 <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}" class="friend-name"></span>
                 <div th:if="${not chat.messages.empty}"
-                     th:text="${chat.messages[0].content}"
+                     th:text="${chat.messages[chat.messages.size()-1].content}"
                      class="friend-last-message"></div>
                 <div th:unless="${not chat.messages.empty}" class="friend-last-message">Нет сообщений</div>
             </div>
@@ -64,16 +64,18 @@
         </div>
     </div>
     <!-- тут для примера используется chatId из роутинга, нужно заменить на сообщения. th: не работает в <div>!!!-->
-    <div class="chat-messages">
-        <div th:if="${chatId != null}" class="message message-incoming">
-            <div class="message-content">Call me later</div>
+    <div class="chat-messages"
+        >
+        <div th:if="${messages}"
+             th:each="message : ${messages}" th:class="${message.getSenderId() != userId} ? 'message message-incoming' : 'message message-outgoing'">
+            <div th:text="${message.getContent()}" class="message-content"></div>
             <div class="message-info">
-                <span th:text="${chatNames.get(userId)}" class="user-message"></span>
-                <span class="message-time">21:42</span>
+                <!-- <span th:text="'От ' + ${chatNames.get(message.getSenderId())} + ': '" class="user-message"></span> -->
+                <span th:text="${#temporals.format(message.timestamp, 'dd MMM yyyy HH:mm')}" class="message-time"></span>
             </div>
         </div>
-    </div>
 
+    </div>
     <div class="chat-input">
         <textarea id="message-input" placeholder="Написать сообщение..."></textarea>
         <button id="send-button" class="send-button" th:data-chatid="${chatId}">

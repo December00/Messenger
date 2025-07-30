@@ -13,7 +13,10 @@
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
-    <!-- Форма входа -->
+    <!-- Форма входа
+     <div th:if="${message.getSenderId() != userId}" class="message message-incoming">
+        <div th:if="${message.getSenderId() == userId}" class="message message-outgoing">
+        -->
     <form id="login-form" class="auth-form active" method="post" action="/login">
       <h3 class="auth-title">Вход в аккаунт</h3>
 

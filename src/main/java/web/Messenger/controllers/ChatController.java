@@ -80,6 +80,7 @@ public class ChatController {
         else{
             friend = userRepository.findById(currentChat.getFirstId());
         }
+        model.addAttribute("messages", currentChat.getMessages());
         model.addAttribute("currentFriend", friend.get().getLogin());
         model.addAttribute("chats", chats);
         model.addAttribute("chatNames", chatNames);

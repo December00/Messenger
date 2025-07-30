@@ -150,12 +150,24 @@
         border-top-right-radius: 5px;
         text-align: right;
     }
+    .message-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
+    }
+
+    .message-incoming .message-info {
+        justify-content: flex-start;
+    }
+
+    .message-outgoing .message-info {
+        justify-content: flex-end;
+    }
 
     .message-time {
         font-size: 12px;
         color: #999;
-        margin-top: 5px;
-        text-align: right;
+        margin-top: 2px;
     }
 
     .chat-input {

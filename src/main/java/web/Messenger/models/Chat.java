@@ -22,7 +22,7 @@ public class Chat {
     private Long secondId;
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("timestamp DESC")
+    @OrderBy("timestamp ASC")
     private List<Message> messages = new ArrayList<>();
 
     // Конструкторы, геттеры, сеттеры

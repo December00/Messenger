@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <title>Messenger - Чат с друзьями</title>
     <link rel="stylesheet" href="/css/chat.css">
 </head>
-<body>
+<body th:data-userid="${userId}">
 <div class="buttons-sidebar">
     <button class="sidebar-button" title="Начать видеочат">
         <span class="videochat-icon">📹</span>
@@ -21,7 +23,7 @@
     </button>
     <form method="post" action="/chat">
         <div id="add-friend-form" class="add-friend-form">
-            <input type="text" name="name" placeholder="Введите имя пользователя" required>
+            <input type="text" id="friend-username" name="name" placeholder="Введите имя пользователя" required>
             <button type="submit" id="submit-add-friend">Добавить</button>
         </div>
     </form>
@@ -78,7 +80,7 @@
     </div>
     <div class="chat-input">
         <textarea id="message-input" placeholder="Написать сообщение..."></textarea>
-        <button id="send-button" class="send-button" th:data-chatid="${chatId}">
+        <button id="send-button" class="send-button" th:data-chatid="${chatId}" >
             <span class="icon">→</span>
         </button>
     </div>

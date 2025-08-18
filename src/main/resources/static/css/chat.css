@@ -51,9 +51,15 @@
         overflow: hidden;
     }
 
+
     .friend-name {
         font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
     }
+
     .buttons-sidebar {
         width: 60px;
         background-color: #252525;
@@ -214,7 +220,21 @@
     .friend-item {
         position: relative;
     }
-
+    .friend-info {
+        flex: 1;
+        min-width: 0;
+    }
+    .friend-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px;
+    }
+    .friend-last-time {
+        font-size: 11px;
+        color: #999;
+        margin-left: 10px;
+    }
     .friend-last-message {
         font-size: 12px;
         color: #999;

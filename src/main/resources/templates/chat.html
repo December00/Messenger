@@ -38,8 +38,14 @@
             th:id="'chat-' + ${chat.id}"
             th:onclick="'window.location.href=\'/chat/' + ${chat.id} + '\''">
             <div class="friend-avatar"></div>
-            <div>
-                <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}" class="friend-name"></span>
+            <div class="friend-info">
+                <div class="friend-header">
+            <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}"
+                  class="friend-name"></span>
+                    <span th:if="${not chat.messages.empty}"
+                          th:text="${@dateUtils.formatMessageTime(chat.messages[chat.messages.size()-1].timestamp)}"
+                          class="friend-last-time"></span>
+                </div>
                 <div th:if="${not chat.messages.empty}"
                      th:text="${chat.messages[chat.messages.size()-1].content}"
                      class="friend-last-message"></div>
@@ -73,7 +79,7 @@
             <div th:text="${message.getContent()}" class="message-content"></div>
             <div class="message-info">
                 <!-- <span th:text="'От ' + ${chatNames.get(message.getSenderId())} + ': '" class="user-message"></span> -->
-                <span th:text="${#temporals.format(message.timestamp, 'dd MMM yyyy HH:mm')}" class="message-time"></span>
+                <span th:text="${@messageDateUtils.formatMessageTime(message.timestamp)}" class="message-time"></span>
             </div>
         </div>
 

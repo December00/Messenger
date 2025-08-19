@@ -32,28 +32,30 @@
     <div class="friends-header">
         <h2>Друзья</h2>
     </div>
-    <ul class="friends-list">
-        <li class="friend-item"
-            th:each="chat : ${chats}"
-            th:id="'chat-' + ${chat.id}"
-            th:onclick="'window.location.href=\'/chat/' + ${chat.id} + '\''">
-            <div class="friend-avatar"></div>
-            <div class="friend-info">
-                <div class="friend-header">
-            <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}"
-                  class="friend-name"></span>
-                    <span th:if="${not chat.messages.empty}"
-                          th:text="${@dateUtils.formatMessageTime(chat.messages[chat.messages.size()-1].timestamp)}"
-                          class="friend-last-time"></span>
+    <div class="friends-list-container">
+        <ul class="friends-list">
+            <li class="friend-item"
+                th:each="chat : ${chats}"
+                th:id="'chat-' + ${chat.id}"
+                th:onclick="'window.location.href=\'/chat/' + ${chat.id} + '\''">
+                <div class="friend-avatar"></div>
+                <div class="friend-info">
+                    <div class="friend-header">
+                        <span th:text="${userId == chat.firstId} ? ${chatNames.get(chat.secondId)} : ${chatNames.get(chat.firstId)}"
+                            class="friend-name"></span>
+                        <span th:if="${not chat.messages.empty}"
+                              th:text="${@dateUtils.formatMessageTime(chat.messages[chat.messages.size()-1].timestamp)}"
+                              class="friend-last-time"></span>
+                    </div>
+                    <div th:if="${not chat.messages.empty}"
+                         th:text="${chat.messages[chat.messages.size()-1].content}"
+                         class="friend-last-message"></div>
+                    <div th:unless="${not chat.messages.empty}" class="friend-last-message">Нет сообщений</div>
                 </div>
-                <div th:if="${not chat.messages.empty}"
-                     th:text="${chat.messages[chat.messages.size()-1].content}"
-                     class="friend-last-message"></div>
-                <div th:unless="${not chat.messages.empty}" class="friend-last-message">Нет сообщений</div>
-            </div>
-        </li>
+            </li>
 
-    </ul>
+        </ul>
+    </div>
 </div>
 
 <div class="chat-container">

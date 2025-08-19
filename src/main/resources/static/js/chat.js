@@ -25,18 +25,105 @@
     // Успешное подключение
     function onConnect() {
         console.log("WebSocket connected!");
-        stompClient.subscribe('/topic/messages', (message) => {
+
+        // Подписка на сообщения текущего чата
+        if (currentChatId) {
+            const chatDestination = `/topic/chat.${currentChatId}`;
+            stompClient.subscribe(chatDestination, (message) => {
+                try {
+                    const msg = JSON.parse(message.body);
+                    displayMessage(msg);
+                } catch (e) {
+                    console.error("Error parsing message:", e);
+                }
+            });
+        }
+    const updateDestination = `/queue/chat.updates.user.${userId}`;
+
+
+    stompClient.subscribe(updateDestination, (message) => {
             try {
                 const msg = JSON.parse(message.body);
-                if (msg.chat.id == currentChatId) {
-                    displayMessage(msg);
-                }
+                updateChatList(msg);
             } catch (e) {
-                console.error("Error parsing message:", e);
+                console.error("Error parsing chat update:", e);
             }
         });
     }
 
+    function displayMessage(message) {
+        if (!messagesContainer) return;
+
+        const isOutgoing = message.senderId == userId;
+        const messageElement = document.createElement('div');
+
+        messageElement.className = isOutgoing ? 'message message-outgoing' : 'message message-incoming';
+        messageElement.innerHTML = `
+            <div class="message-content">${message.content}</div>
+            <div class="message-time">
+                ${new Date(message.timestamp).toLocaleString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}
+            </div>
+        `;
+
+        messagesContainer.appendChild(messageElement);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function updateChatList(message) {
+        const chatList = document.querySelector('.friends-list');
+        let chatItem = document.querySelector(`#chat-${message.chat.id}`);
+
+        if (!chatItem) {
+            chatItem = createNewChatItem(message);
+            chatList.prepend(chatItem);
+        } else {
+            const lastMessage = chatItem.querySelector('.friend-last-message');
+            const lastTime = chatItem.querySelector('.friend-last-time');
+
+            if (lastMessage) lastMessage.textContent = message.content;
+            if (lastTime) lastTime.textContent = new Date(message.timestamp)
+                .toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+
+            chatList.prepend(chatItem);
+
+            if (message.chat.id != currentChatId) {
+                chatItem.classList.add('new-message');
+                setTimeout(() => chatItem.classList.remove('new-message'), 5000);
+            }
+        }
+    }
+
+    function createNewChatItem(message) {
+        const li = document.createElement('li');
+        li.className = 'friend-item new-message';
+        li.id = `chat-${message.chat.id}`;
+
+        const chatName = 'Новый собеседник';
+
+        li.innerHTML = `
+            <div class="friend-avatar"></div>
+            <div class="friend-info">
+                <div class="friend-header">
+                    <span class="friend-name">${chatName}</span>
+                    <span class="friend-last-time">
+                        ${new Date(message.timestamp).toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})}
+                    </span>
+                </div>
+                <div class="friend-last-message">${message.content}</div>
+            </div>
+        `;
+
+        li.addEventListener('click', function() {
+            window.location.href = `/chat/${message.chat.id}`;
+        });
+
+        setTimeout(() => li.classList.remove('new-message'), 5000);
+
+        return li;
+    }
     // Ошибка подключения
     function onError(error) {
         console.error("WebSocket error:", error);
@@ -72,28 +159,6 @@
         messageInput.value = "";
     }
 
-    function displayMessage(message) {
-        if (!messagesContainer) return;
-
-        const isOutgoing = message.senderId == userId;
-        const messageElement = document.createElement('div');
-
-        messageElement.className = isOutgoing ? 'message message-outgoing' : 'message message-incoming';
-        messageElement.innerHTML = `
-            <div class="message-content">${message.content}</div>
-            <div class="message-time">
-                ${new Date(message.timestamp).toLocaleString('ru-RU', {
-                    day: 'numeric',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })}
-            </div>
-        `;
-
-        messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
 
     // Показать/скрыть форму при клике на "+"
    addButton?.addEventListener('click', function(e) {
@@ -161,7 +226,6 @@
     });
 
     // Инициализация WebSocket
-    if (currentChatId) {
-        connect();
-    }
+    connect();
+
 });

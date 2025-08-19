@@ -3,6 +3,7 @@ package web.Messenger.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import web.Messenger.models.Chat;
 import web.Messenger.models.Message;
@@ -17,11 +18,27 @@ public class MessagingController {
     private MessageRepository messageRepository;
     @Autowired
     private ChatRepository chatRepository;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public Message process(Message message) {
+    public void handleMessage(Message message) {
+        Chat chat = chatRepository.findById(message.getChat().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Chat not found"));
+
+
         message.setTimestamp(LocalDateTime.now());
-        return messageRepository.save(message);
+        Message savedMessage = messageRepository.save(message);
+
+        // Отправляем сообщение участникам чата
+        String destination = "/topic/chat." + chat.getId();
+        messagingTemplate.convertAndSend(destination, savedMessage);
+
+        // Отправляем обновления списка всех чатов каждому подписчику
+        String updateDestination1 = "/queue/chat.updates.user." + chat.getFirstId();
+        String updateDestination2 = "/queue/chat.updates.user." + chat.getSecondId();
+
+        messagingTemplate.convertAndSend(updateDestination1, savedMessage);
+        messagingTemplate.convertAndSend(updateDestination2, savedMessage);
     }
 }

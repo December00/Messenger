@@ -24,6 +24,7 @@
         display: none;
     }
     .friends-header {
+        height: 60px;
         padding: 0 20px 15px;
         flex-shrink: 0;
         border-bottom: 1px solid #333;
@@ -89,9 +90,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 20px 0;
+        padding: 14px 0;
+        justify-content: space-between;
+        height: 100vh;
     }
-
+    .buttons-sidebar .sidebar-button:last-child {
+        margin-bottom: 20px;
+    }
     .sidebar-button {
         width: 45px;
         height: 45px;
@@ -103,11 +108,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 20px;
         transition: background-color 0.2s;
     }
 
     .chat-header {
+        background-color: #252525;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -145,6 +150,8 @@
         background-color: #1a1a1a;
         scrollbar-width: none; /* Для Firefox */
         -ms-overflow-style: none; /* Для IE и Edge */
+        justify-content: flex-end;
+        scroll-behavior: smooth;
     }
     .chat-messages::-webkit-scrollbar {
         display: none;

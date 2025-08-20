@@ -10,6 +10,7 @@
     const usernameInput = document.getElementById('friend-username');
     const sendButton = document.getElementById('send-button');
     const messageInput = document.getElementById('message-input');
+    scrollToBottom();
 
     // Подключение к WebSocket
     function connect() {
@@ -94,6 +95,8 @@
                 setTimeout(() => chatItem.classList.remove('new-message'), 5000);
             }
         }
+        src = message.chat.id == currentChatId ? 'notificationInSound' : 'notificationOutSound';
+        playSound(src);
     }
 
     function createNewChatItem(message) {
@@ -224,7 +227,19 @@
     window.addEventListener('beforeunload', () => {
         if (stompClient) stompClient.disconnect();
     });
-
+    function scrollToBottom() {
+        const chatMessages = document.querySelector('.chat-messages');
+        if (chatMessages) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+    function playSound(soundName) {
+        const audio = document.getElementById(soundName);
+        audio.currentTime = 0;
+        audio.play().catch(error => {
+            console.log('Автовоспроизведение заблокировано:', error);
+        });
+    }
     // Инициализация WebSocket
     connect();
 

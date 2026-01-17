@@ -16,7 +16,7 @@
     </button>
 
     <div style="flex-grow: 1;"></div>
-        <button class="sidebar-button" title="Настройки">
+        <button class="sidebar-button" title="Настройки" th:onclick="'window.location.href=\'/settings/' + ${userId} + '\''">
             <img src="/images/setting.png" alt="Настройки">
         </button>
     <form method="post" action="/chat">
@@ -75,8 +75,7 @@
             </button> -->
         </div>
     </div>
-    <div class="chat-messages"
-        >
+    <div class="chat-messages">
         <div th:if="${messages}"
              th:each="message : ${messages}" th:class="${message.getSenderId() != userId} ? 'message message-incoming' : 'message message-outgoing'">
             <div th:text="${message.getContent()}" class="message-content"></div>

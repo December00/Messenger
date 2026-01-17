@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Настройки</title>
+    <link rel="stylesheet" href="/css/settings.css">
+</head>
+<body th:data-userid="${user.getId}">
+    <div class="settings-container">
+        <div class="avatar">
+          <img th:src="${user.getAvatarPath} ? '/' + ${user.getAvatarPath} : '/images/profile.png'" alt="profile" id="avatar-image" width="144" height="144">
+        </div>
+        <div class="login-container" th:text="${user.getLogin()}">Login</div>
+        <div class="name-container" th:text="'@' + ${user.getName()}">@Name</div>
+        <div class="data-input-container">
+            <label for="image-file" class="input-label">Изменить аватар</label>
+            <input type="file" id="image-file" accept="image/jpeg">
+        </div>
+    </div>
+    <script src="/js/settings.js"></script>
+</body>
+</html>

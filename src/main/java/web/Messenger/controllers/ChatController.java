@@ -1,6 +1,7 @@
 package web.Messenger.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +24,22 @@ import java.util.Optional;
 
 @Controller
 public class ChatController {
-    private Map<Long, String> getChatNames(List<Chat> chats){
-        Map<Long, String> chatNames = new HashMap<>();
+    private Map<Long, Pair<String, String>> getChatNames(List<Chat> chats){
+        Pair<String, String> logAvatars;
+        Map<Long, Pair<String, String>> chatNames = new HashMap<>();
         for(Chat chat : chats) {
-            if(!chatNames.containsKey(chat.getSecondId()))
-                chatNames.put(chat.getSecondId(), userRepository.findById(chat.getSecondId()).get().getLogin());
-            if(!chatNames.containsKey(chat.getFirstId()))
-                chatNames.put(chat.getFirstId(), userRepository.findById(chat.getFirstId()).get().getLogin());
+            if(!chatNames.containsKey(chat.getSecondId())) {
+                Optional<User> userOptional = userRepository.findById(chat.getSecondId());
+                User user = userOptional.get();
+                logAvatars = new Pair<>(user.getLogin(),user.getAvatarPath());
+                chatNames.put(chat.getSecondId(), logAvatars);
+            }
+            if(!chatNames.containsKey(chat.getFirstId())) {
+                Optional<User> userOptional = userRepository.findById(chat.getFirstId());
+                User user = userOptional.get();
+                logAvatars = new Pair<>(user.getLogin(),user.getAvatarPath());
+                chatNames.put(chat.getFirstId(), logAvatars);
+            }
         }
         return chatNames;
     }
@@ -48,7 +58,7 @@ public class ChatController {
         }
         List<Chat> chats = chatRepository.findAllUserChats(userId);
 
-        Map<Long, String> chatNames = getChatNames(chats);
+        Map<Long, Pair<String, String>> chatNames = getChatNames(chats);
 
         model.addAttribute("chats", chats);
         model.addAttribute("chatNames", chatNames);
@@ -72,7 +82,7 @@ public class ChatController {
             return "redirect:/chat";
         }
         List<Chat> chats = chatRepository.findAllUserChats(userId);
-        Map<Long, String> chatNames = getChatNames(chats);
+        Map<Long, Pair<String, String>> chatNames = getChatNames(chats);
         Optional<User> friend;
         if(currentChat.getFirstId().equals(userId)){
              friend = userRepository.findById(currentChat.getSecondId());
@@ -82,6 +92,7 @@ public class ChatController {
         }
         model.addAttribute("messages", currentChat.getMessages());
         model.addAttribute("currentFriend", friend.get().getLogin());
+        model.addAttribute("friendAvatar", friend.get().getAvatarPath());
         model.addAttribute("chats", chats);
         model.addAttribute("chatNames", chatNames);
         model.addAttribute("userId", userId);
@@ -128,7 +139,7 @@ public class ChatController {
             return "redirect:/chat";
         }
         List<Chat> chats = chatRepository.findAllUserChats(userId);
-        Map<Long, String> chatNames = getChatNames(chats);
+        Map<Long, Pair<String, String>> chatNames = getChatNames(chats);
         Optional<User> friend;
         if(currentChat.getFirstId().equals(userId)){
             friend = userRepository.findById(currentChat.getSecondId());

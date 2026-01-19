@@ -1,0 +1,146 @@
+﻿body {
+    display: flex;
+    height: 100vh;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    }
+.error-container {
+    display: flex;
+    height: 100vh;
+    margin: 0 auto;
+    font-family: 'Arial';
+    }
+
+.error-content {
+    flex: 1;
+    background-color: #36393f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
+
+.error-card {
+    background-color: #2f3136;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.error-code {
+    font-size: 72px;
+    font-weight: bold;
+    color: #7289da;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.error-title {
+    font-size: 28px;
+    margin: 20px 0 10px;
+    color: #ffffff;
+}
+
+.error-message {
+    color: #b9bbbe;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.error-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.error-btn {
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.1s;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.error-btn-primary {
+    background-color: #5865f2;
+    color: white;
+}
+
+.error-btn-primary:hover {
+    background-color: #4752c4;
+    transform: translateY(-2px);
+}
+
+.error-btn-secondary {
+    background-color: #4f545c;
+    color: white;
+}
+
+.error-btn-secondary:hover {
+    background-color: #5d6269;
+    transform: translateY(-2px);
+}
+
+.btn-icon {
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.search-icon {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.sidebar-logo {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+}
+
+.back-home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #b9bbbe;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    margin-top: 20px;
+}
+
+.back-home-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.path-display {
+    background-color: #202225;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 20px 0;
+    font-family: monospace;
+    color: #7289da;
+    word-break: break-all;
+}

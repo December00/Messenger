@@ -92,6 +92,7 @@ public class ChatController {
         }
         model.addAttribute("messages", currentChat.getMessages());
         model.addAttribute("currentFriend", friend.get().getLogin());
+        model.addAttribute("friendId", friend.get().getId());
         model.addAttribute("friendAvatar", friend.get().getAvatarPath());
         model.addAttribute("chats", chats);
         model.addAttribute("chatNames", chatNames);
@@ -113,16 +114,23 @@ public class ChatController {
             if(chatRepository.existsByFirstIdAndSecondId(userId, friendId) || chatRepository.existsByFirstIdAndSecondId(friendId, userId)){
                 throw new Exception("Такой чат уже создан");
             }
+            if (userId.equals(friendId)) {
+
+                throw new Exception("Нельзя создать чат с собой");
+            }
             Chat chat = new Chat(userId, friendId);
             chatRepository.save(chat);
 
+            return "redirect:/chat/" + chat.getId();
         }
         catch(Exception e) {
-            model.addAttribute("error", e);
-            return "registration";
+            model.addAttribute("statusCode", 405);
+            model.addAttribute("statusText", "Метод не разрешен");
+            model.addAttribute("message", e);
+            model.addAttribute("path", "/chat");
+            model.addAttribute("timestamp", java.time.LocalDateTime.now());
+            return "error";
         }
-
-        return "redirect:/chat";
     }
     @PostMapping("/chat/{id}")
     public String printMessage(@PathVariable(value = "id") Long chatId,  @RequestParam String content, Model model, HttpSession session){

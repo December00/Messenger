@@ -1,0 +1,65 @@
+﻿* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+    }
+
+body {
+        height: 100vh;
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+    }
+.settings-container {
+        margin-left: 30%;
+        background-color: #252525;
+        height: 100vh;
+        width: 40%;
+        text-align: center;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+
+    }
+.avatar {
+        width: 144px;
+        height: 144px;
+        border-radius: 50%;
+        background-color: #444;
+        margin: 0 auto;
+        margin-top: 8%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+.avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Важно: изображение заполнит круг без искажений */
+        display: block;
+    }
+.login-container {
+        text-align: center;
+        margin-top: 2%;
+        font-size: 20px;
+        color: #f1f1f1;
+}
+.name-container {
+        text-align: center;
+        margin-top: 2%;
+        font-size: 16px;
+        color: #f1f1f1;
+}
+.profile-button {
+        width: 60%;
+        height: 6vh;
+        margin: auto;
+        margin-top: 5%;
+        border-radius: 4px;
+        cursor: pointer;
+        background: #FF096C;
+        line-height: 6vh;
+        text-align: center;
+        display: inline-block;
+}

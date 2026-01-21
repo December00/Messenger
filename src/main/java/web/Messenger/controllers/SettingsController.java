@@ -67,9 +67,12 @@ public class SettingsController {
         if (userId == null) {
             return "redirect:/login";
         }
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(uid);
         if (user.isEmpty()) {
             return "redirect:/login";
+        }
+        if (!userId.equals(uid)){
+            return "redirect:/settings/" + userId;
         }
         model.addAttribute("user", user.get());
 

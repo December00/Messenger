@@ -66,7 +66,9 @@
 </div>
 
 <div class="chat-container">
-    <div class="chat-header">
+    <div class="chat-header" th:style="${friendId} ?
+         'cursor: pointer;' : ''"
+         th:onclick="${friendId} ? 'window.location.href=\'/profile/' + ${friendId} + '\'' : 'null'">
         <div class="chat-current-friend">
             <div class="friend-avatar" style="margin-right: 10px;">
                 <img th:src="${friendAvatar} ?

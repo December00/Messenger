@@ -1,5 +1,7 @@
 package web.Messenger.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,14 +58,16 @@ public class SettingsController {
             }
         }
     }
-
+    @Autowired
+    private web.Messenger.Services.SessionService sessionService;
     @Autowired
     private UserRepository userRepository;
     @Value("${file.upload-dir}")
     private String uploadDir;
     @GetMapping("/settings/{id}")
-    public String settingsPage(@PathVariable(value = "id") Long uid, Model model, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
+    public String settingsPage(@PathVariable(value = "id") Long uid, Model model, HttpSession session,
+                               HttpServletRequest request, HttpServletResponse response) {
+        Long userId = sessionService.getUserIdFromSessionOrCookie(request, response, session);
         if (userId == null) {
             return "redirect:/login";
         }
@@ -80,9 +84,10 @@ public class SettingsController {
     }
     @PostMapping("/settings/{id}/upload")
     public String uploadImage(@PathVariable(value = "id") Long uid, @RequestParam("file") MultipartFile file,
-                              Model model, HttpSession session) throws IOException {
+                              Model model, HttpSession session, HttpServletRequest request,
+                              HttpServletResponse response) throws IOException {
 
-        Long userId = (Long) session.getAttribute("userId");
+        Long userId = sessionService.getUserIdFromSessionOrCookie(request, response, session);
         if (userId == null) {
             return "redirect:/login";
         }

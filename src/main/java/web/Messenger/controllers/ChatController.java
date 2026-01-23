@@ -1,5 +1,7 @@
 package web.Messenger.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class ChatController {
         return chatNames;
     }
     @Autowired
+    private web.Messenger.Services.SessionService sessionService;
+    @Autowired
     private ChatRepository chatRepository;
     @Autowired
     private MessageRepository messageRepository;
@@ -51,8 +55,8 @@ public class ChatController {
     private UserRepository userRepository;
 
     @GetMapping("/chat")
-    public String chatPage(Model model, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
+    public String chatPage(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        Long userId = sessionService.getUserIdFromSessionOrCookie(request, response, session);
         if (userId == null) {
             return "redirect:/login";
         }
@@ -67,8 +71,9 @@ public class ChatController {
         return "chat";
     }
     @GetMapping("/chat/{id}")
-    public String currentChat(@PathVariable(value = "id") Long chatId, Model model, HttpSession session){
-        Long userId = (Long) session.getAttribute("userId");
+    public String currentChat(@PathVariable(value = "id") Long chatId, Model model, HttpSession session,
+                              HttpServletRequest request, HttpServletResponse response) {
+        Long userId = sessionService.getUserIdFromSessionOrCookie(request, response, session);
         if (userId == null) {
             return "redirect:/login";
         }
@@ -102,9 +107,10 @@ public class ChatController {
 
     }
     @PostMapping("/chat")
-    public String addChat(@RequestParam String name, HttpSession session, Model model){
+    public String addChat(@RequestParam String name, HttpSession session, Model model,
+                          HttpServletRequest request, HttpServletResponse response){
         try {
-            Long userId = (Long) session.getAttribute("userId");
+            Long userId = sessionService.getUserIdFromSessionOrCookie(request, response, session);
             Optional<User> friendOptional = userRepository.findByLogin(name);
             if(friendOptional.isEmpty()){
                 throw new Exception("Пользователь с таким ником не найден");

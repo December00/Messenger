@@ -111,8 +111,9 @@ public class ChatController {
             }
             User friend = friendOptional.get();
             Long friendId = friend.getId();
-            if(chatRepository.existsByFirstIdAndSecondId(userId, friendId) || chatRepository.existsByFirstIdAndSecondId(friendId, userId)){
-                throw new Exception("Такой чат уже создан");
+            Chat checkChat = chatRepository.findChatBetween(userId, friendId);
+            if(checkChat != null){
+                return "redirect:/chat/" + checkChat.getId();
             }
             if (userId.equals(friendId)) {
 

@@ -16,4 +16,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     Optional<Chat> findById(Long chatId);
 
     boolean existsByFirstIdAndSecondId(Long firstId, Long secondId);
+
+    @Query("SELECT c FROM Chat c WHERE (c.firstId = :userId AND c.secondId = :friendId) OR (c.firstId = :friendId AND c.secondId = :userId)")
+    Chat findChatBetween(@Param("userId") Long userId, @Param("friendId") Long friendId);
 }

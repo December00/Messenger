@@ -130,4 +130,36 @@ public class MainController {
         response.addCookie(sessionCookie);
         return "redirect:/chat";
     }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        Cookie[] cookies = request.getCookies();
+        String sessionToken = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("sessionToken".equals(cookie.getName())) {
+                    sessionToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        // Если токен есть удаляю сессию из БД
+        if (sessionToken != null) {
+            Optional<Session> sessionOpt = sessionRepository.findByToken(sessionToken);
+            sessionOpt.ifPresent(sessionRepository::delete);
+        }
+        // Удаляю куку из браузера
+        Cookie cookie = new Cookie("sessionToken", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        if (request.isSecure()) {
+            cookie.setSecure(true);
+        }
+        response.addCookie(cookie);
+        // Завершаю сессию
+        session.invalidate();
+
+        return "redirect:/login";
+    }
 }

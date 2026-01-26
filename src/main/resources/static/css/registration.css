@@ -10,13 +10,48 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #1a1a1a;
-    color: #e0e0e0;
+    background-color: var(--bg-color-first);
+    color: var(--color-first);
 }
-
+:root {
+    --bg-color-first: #1a1a1a;
+    --bg-color-second: #252525;
+    --bg-color-third: #333;
+    --bg-color-fourth: #FF096C;
+    --color-first: #e0e0e0;
+    --color-second: #444;
+    --color-third: #FF096C;
+}
+[data-theme="dark-blue"] {
+    --bg-color-first: #1a1a1a; /* задний фон */
+    --bg-color-second: #252525; /* фон контейнера формы */
+    --bg-color-third:  #333; /* фон полей для ввода */
+    --bg-color-fourth: #5865f2; /* акцентный цвет */
+    --color-first: #e0e0e0;
+    --color-second: #444;
+    --color-third: #7289da;
+}
+[data-theme="light-pink"] {
+    --bg-color-first: #fff0f3; /* задний фон */
+    --bg-color-second: #f9f9f9; /* фон контейнера формы */
+    --bg-color-third:  #eee; /* фон полей для ввода */
+    --bg-color-fourth: #FF096C; /* акцентный цвет */
+    --color-first: #444;
+    --color-second: #ddd;
+    --color-third: #FF096C;
+}
+[data-theme="light-blue"] {
+    --bg-color-first: #f3f0ff; /* задний фон */
+    --bg-color-second: #f9f9f9; /* фон контейнера формы */
+    --bg-color-third:  #eee; /* фон полей для ввода */
+    --bg-color-fourth: #5865f2; /* акцентный цвет */
+    --color-first: #444;
+    --color-second: #ddd;
+    --color-third: #7289da;
+}
 .auth-container {
     width: 400px;
-    background-color: #252525;
+    background-color: var(--bg-color-second);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -40,30 +75,30 @@ body {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
-    color: #999;
+    color: var(--color-first);
 }
 
 .form-control {
     width: 100%;
     padding: 12px 15px;
-    background-color: #333;
+    background-color: var(--bg-color-third);
     border: none;
     border-radius: 5px;
-    color: #e0e0e0;
+    color: var(--color-first);
     font-size: 14px;
     outline: none;
     transition: background-color 0.2s;
 }
 
 .form-control:focus {
-    background-color: #444;
+    background-color: var(--color-second);
 }
 
 .btn {
     display: block;
     width: 100%;
     padding: 12px;
-    background-color: #FF096C;
+    background-color: var(--bg-color-fourth);
     color: white;
     border: none;
     border-radius: 5px;
@@ -80,13 +115,13 @@ body {
     display: block;
     text-align: center;
     margin-top: 20px;
-    color: #999;
+    color: var(--color-first);
     font-size: 14px;
     cursor: pointer;
 }
 
 .switch-link span {
-    color: #FF096C;
+    color: var(--color-third);
     text-decoration: none;
     transition: color 0.2s;
 }

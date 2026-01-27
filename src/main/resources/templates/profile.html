@@ -5,7 +5,7 @@
   <title>Настройки</title>
   <link rel="stylesheet" href="/css/profile.css">
 </head>
-<body th:data-friendlogin="${user.getLogin}">
+<body th:data-friendlogin="${user.getLogin}" data-theme="">
 <div class="settings-container">
   <div class="avatar">
     <img th:src="${user.getAvatarPath} ? '/' + ${user.getAvatarPath} : '/images/profile.png'" alt="profile" id="avatar-image" width="144" height="144">

@@ -8,9 +8,10 @@
     <title>Messenger - Чат с друзьями</title>
     <link rel="stylesheet" href="/css/chat.css">
 </head>
-<body th:data-userid="${userId}">
+<body th:data-userid="${userId}" data-theme="">
 <div class="buttons-sidebar">
-    <img src="/images/logo.png" alt="logo">
+    <!--<img th:src="${theme.contains(light)} ? '/images/logo.png' : '/images/logo.png'" alt="logo">-->
+    <img src="/images/logo-black.png" alt="logo">
     <button id="add-button" class="sidebar-button" title="Добавить друга" style="margin-top: 20px;">
         <img src="/images/add-friend.png" alt="add">
     </button>
@@ -77,7 +78,7 @@
             </div>
             <div>
                 <div class="friend-name" th:text="${currentFriend} ? ${currentFriend}: 'Выберите чат'"></div>
-                <div style="font-size: 12px; color: #999;">в сети</div>
+                <div class="friend-status" >в сети</div>
             </div>
         </div>
         <div class="videochat-sidebar">

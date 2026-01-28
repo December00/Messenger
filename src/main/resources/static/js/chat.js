@@ -10,6 +10,7 @@
     const usernameInput = document.getElementById('friend-username');
     const sendButton = document.getElementById('send-button');
     const messageInput = document.getElementById('message-input');
+    const logoPNG = document.getElementById('logo');
     scrollToBottom();
 
     // Подключение к WebSocket
@@ -242,5 +243,10 @@
     }
     // Инициализация WebSocket
     connect();
-
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+        if(savedTheme.includes('light'))
+            logoPNG.setAttribute('src', '/images/logo-black.png')
+    }
 });

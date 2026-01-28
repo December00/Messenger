@@ -34,7 +34,7 @@ body {
     --bg-color-third:  #eee; /* фон полей для ввода */
     --bg-color-fourth: #FF096C; /* акцентный цвет */
     --color-first: #444;
-    --color-second: #ddd;
+    --color-second: #f1f1f1;
     --color-third: #FF096C;
 }
 [data-theme="light-blue"] {
@@ -43,7 +43,7 @@ body {
     --bg-color-third:  #eee; /* фон полей для ввода */
     --bg-color-fourth: #5865f2; /* акцентный цвет */
     --color-first: #444;
-    --color-second: #ddd;
+    --color-second: #f1f1f1;
     --color-third: #7289da;
 }
 .settings-container {

@@ -1,5 +1,6 @@
 package web.Messenger.controllers;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -8,10 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import web.Messenger.Data.Res;
 import web.Messenger.models.Chat;
@@ -120,5 +118,24 @@ public class SettingsController {
         model.addAttribute("user", user);
 
         return "settings";
+    }
+    @PostMapping("/settings/theme")
+    @ResponseBody
+    public String changeTheme(@RequestParam("theme") String theme,
+                              HttpServletResponse response) {
+
+        if (theme == null || theme.isEmpty()) {
+            return "error";
+        }
+
+        // Создаем куки с темой
+        Cookie themeCookie = new Cookie("currentTheme", theme);
+        themeCookie.setMaxAge(31536000); // == 1 ujl
+        themeCookie.setPath("/");
+        themeCookie.setHttpOnly(false);
+        themeCookie.setSecure(false);
+        response.addCookie(themeCookie);
+
+        return "success";
     }
 }

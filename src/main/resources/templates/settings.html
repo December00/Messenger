@@ -16,6 +16,12 @@
             <label for="image-file" class="input-label">Изменить аватар</label>
             <input type="file" id="image-file" accept="image/jpeg">
         </div>
+        <div class="theme-switch-container">
+            <input type="radio" id="themeChoice1" name="theme" value="dark-pink" />
+            <input type="radio" id="themeChoice2" name="theme" value="dark-blue" />
+            <input type="radio" id="themeChoice3" name="theme" value="light-pink" />
+            <input type="radio" id="themeChoice4" name="theme" value="light-blue" />
+        </div>
         <div class="logout-button" th:onclick="'window.location.href=\'/logout' + '\''">Выйти из аккаунта</div>
     </div>
     <script src="/js/settings.js"></script>

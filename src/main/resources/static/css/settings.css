@@ -3,12 +3,17 @@
         padding: 0;
         box-sizing: border-box;
         font-family: 'Arial', sans-serif;
+
     }
 
 body {
         height: 100vh;
         background-color: var(--bg-color-first);
         color: var(--color-first);
+        transition: background-color 0.5s ease,
+                        color 0.5s ease,
+                        border-color 0.5s ease,
+                        box-shadow 0.5s ease;
     }
 :root {
     --bg-color-first: #1a1a1a;
@@ -127,4 +132,50 @@ body {
         color: var(--bg-color-fourth);
         border: 1px solid var(--bg-color-fourth);
         transition: all 0.18s ease-in-out;
+}
+.theme-switch-container {
+    margin: 0 auto;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.theme-switch-container input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.1s ease;
+    position: relative;
+    outline: none;
+}
+
+.theme-switch-container input[type="radio"]:checked {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    outline: 2px solid var(--bg-color-fourth);
+}
+#themeChoice1 {
+    background: linear-gradient(270deg, #1a1a1a 50%, #FF096C 50%);
+    border: 2px solid #1a1a1a;
+}
+
+#themeChoice2 {
+    background: linear-gradient(270deg, #1a1a1a 50%, #5865f2 50%);
+    border: 2px solid #1a1a1a;
+}
+
+#themeChoice3 {
+    background: linear-gradient(270deg, #fff0f3 50%, #FF096C 50%);
+    border: 2px solid #1a1a1a;
+}
+
+#themeChoice4 {
+    background: linear-gradient(270deg, #f3f0ff 50%, #5865f2 50%);
+    border: 2px solid #1a1a1a;
 }

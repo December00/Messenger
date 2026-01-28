@@ -22,4 +22,9 @@
     if (successMessage && successMessage.textContent.includes('Регистрация')) {
         showForm('login');
     }
+     const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+
+    }
 });

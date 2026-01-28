@@ -18,6 +18,7 @@ body {
     --bg-color-second: #252525;
     --bg-color-third: #333;
     --bg-color-fourth: #FF096C;
+    --bg-color-fifth: #e00860;
     --color-first: #e0e0e0;
     --color-second: #444;
     --color-third: #FF096C;
@@ -27,6 +28,7 @@ body {
     --bg-color-second: #252525; /* фон контейнера формы */
     --bg-color-third:  #333; /* фон полей для ввода */
     --bg-color-fourth: #5865f2; /* акцентный цвет */
+    --bg-color-fifth: #525ed9;
     --color-first: #e0e0e0;
     --color-second: #444;
     --color-third: #7289da;
@@ -36,6 +38,7 @@ body {
     --bg-color-second: #f9f9f9; /* фон контейнера формы */
     --bg-color-third:  #eee; /* фон полей для ввода */
     --bg-color-fourth: #FF096C; /* акцентный цвет */
+    --bg-color-fifth: #e00860;
     --color-first: #444;
     --color-second: #ddd;
     --color-third: #FF096C;
@@ -45,6 +48,7 @@ body {
     --bg-color-second: #f9f9f9; /* фон контейнера формы */
     --bg-color-third:  #eee; /* фон полей для ввода */
     --bg-color-fourth: #5865f2; /* акцентный цвет */
+    --bg-color-fifth: #525ed9;
     --color-first: #444;
     --color-second: #ddd;
     --color-third: #7289da;
@@ -108,7 +112,7 @@ body {
 }
 
 .btn:hover {
-    background-color: #e00860;
+    background-color: var(--bg-color-fifth);
 }
 
 .switch-link {
@@ -127,7 +131,7 @@ body {
 }
 
 .switch-link span:hover {
-    color: #e00860;
+    color: var(--bg-color-fifth);
     text-decoration: underline;
 }
 

@@ -1,7 +1,7 @@
 ﻿document.addEventListener('DOMContentLoaded', function() {
     const friendLogin = document.body.dataset.friendlogin;
     const messageButton = document.getElementById('message-button');
-
+    const avatarPNG = document.getElementById('avatar-image');
     if (messageButton) {
         messageButton.addEventListener('click', function(event) {
             event.preventDefault();
@@ -35,4 +35,10 @@
             });
         });
     }
+     const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+            if(savedTheme.includes('light') && !avatarPNG.getAttribute('src').includes('user'))
+                avatarPNG.setAttribute('src', '/images/profile-black.png')
+        }
 });
